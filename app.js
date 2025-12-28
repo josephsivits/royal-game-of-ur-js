@@ -1,5 +1,3 @@
-import { Game } from './Game.js';
-
 class GameUI {
   constructor() {
     this.game = new Game();

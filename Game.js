@@ -3,7 +3,7 @@
  * Finkel Ruleset implementation
  */
 
-export class Game {
+class Game {
   // Game Constants
   static ROSETTES = [4, 8, 14];
   static SHARED_PATH = [5, 6, 7, 8, 9, 10, 11, 12];
