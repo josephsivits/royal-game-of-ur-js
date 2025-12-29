@@ -199,7 +199,7 @@ body {
 }
 
 /* Inner triangle (will become same color as outer when active) */
-.die::after {
+ .die::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -236,9 +236,11 @@ body {
   border-bottom-width: 88px;
 }
 
-/* Rolling/Active State (Inverted) */
-.die.active {
-  color: #ffffff !important;
+/* Rolling/Active State */
+.die.active .die-value {
+  /* Keep the die's base color (blue or red) for the triangle background,
+     but make the number pop as white when the die is active */
+  color: #ffffff;
 }
 
 .die.active::before {
