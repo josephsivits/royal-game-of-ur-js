@@ -195,22 +195,28 @@ class GameUI {
   updateDiceDisplay(keepActive = false) {
     const state = this.game.getState();
     
-    if (this.game.lastRoll) {
-      this.game.lastRoll.forEach((value, idx) => {
-        this.dice[idx].textContent = value;
+    // If there is no meaningful dice result (either no roll yet, or the previous
+    // roll has been consumed / was a zero), show neutral dice tied to the
+    // current player's color and clear any active styling.
+    if (!this.game.lastRoll || state.diceResult === null || state.diceResult === 0) {
+      this.dice.forEach(die => {
+        die.textContent = '0';
+        die.parentElement.classList.remove('active', 'rolling');
       });
-      this.sumDie.textContent = state.diceResult !== null ? state.diceResult : 0;
-      
-      // If we are NOT in the middle of a roll animation (i.e. just refreshing state)
-      // and we want to reset to default colors (e.g. after a move or new turn)
-      if (!keepActive) {
-         this.dice.forEach(d => d.parentElement.classList.remove('active', 'rolling'));
-         this.sumDie.parentElement.classList.remove('active', 'rolling');
-      }
-    } else {
-      this.dice.forEach(die => die.textContent = '0');
       this.sumDie.textContent = '0';
-      // Reset colors
+      this.sumDie.parentElement.classList.remove('active', 'rolling');
+      return;
+    }
+
+    // Otherwise, we have an active non-zero roll to display.
+    this.game.lastRoll.forEach((value, idx) => {
+      this.dice[idx].textContent = value;
+    });
+    this.sumDie.textContent = state.diceResult;
+    
+    // When simply refreshing state (not in the middle of the roll animation),
+    // drop the "active" styling so dice revert to their neutral appearance.
+    if (!keepActive) {
       this.dice.forEach(d => d.parentElement.classList.remove('active', 'rolling'));
       this.sumDie.parentElement.classList.remove('active', 'rolling');
     }
@@ -230,7 +236,8 @@ class GameUI {
       this.turnText.textContent = 'RED TURN';
     }
 
-    // Toggle red-turn class on dice panel
+    // Keep dice color aligned with the player whose turn it is (Blue or Red),
+    // so the fill/outline color always matches the current turn indicator.
     this.dicePanel.classList.toggle('red-turn', state.currentTurn === 2);
     
     // 2. Update Roll Button
