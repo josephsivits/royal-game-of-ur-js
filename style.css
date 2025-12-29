@@ -128,16 +128,28 @@ body {
   padding: 0 20px;
   border-radius: 12px;
   border: var(--stroke) solid var(--green);
-  background: transparent;
-  color: var(--green);
+  background: var(--green);
+  color: #ffffff;
   font-weight: 900;
   font-size: 30px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .roll-pill:disabled {
-  opacity: 0.45;
+  background: transparent;
+  color: rgba(32, 179, 105, 0.3);
+  border-color: rgba(32, 179, 105, 0.3);
   cursor: not-allowed;
+}
+
+.roll-pill:not(:disabled):hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.roll-pill:not(:disabled):active {
+  transform: translateY(0);
 }
 
 /* Dice (Right) */
@@ -330,7 +342,7 @@ body {
   .controls-wrap { width: 100%; justify-content: space-between; }
   
   .turn-pill { font-size: 18px; padding: 10px 16px; }
-  .roll-pill { min-width: 80px; height: 50px; font-size: 18px; }
+  .roll-pill { min-width: 80px; height: 50px; font-size: 18px; border-width: 3px; }
   
   .die { width: 40px; height: 36px; font-size: 16px; }
   .die::before { border-left-width: 20px; border-right-width: 20px; border-bottom-width: 36px; }
