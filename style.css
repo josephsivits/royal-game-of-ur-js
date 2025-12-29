@@ -178,7 +178,7 @@ body {
 
 .die-value {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   transform: translateY(10px);
 }
 
@@ -198,7 +198,7 @@ body {
   transition: border-bottom-color 0.2s ease;
 }
 
-/* Inner white triangle */
+/* Inner triangle (will become same color as outer when active) */
 .die::after {
   content: "";
   position: absolute;
@@ -211,6 +211,11 @@ body {
   border-right: 37px solid transparent;
   border-bottom: 68px solid #ffffff;
   z-index: -1;
+  transition: border-bottom-color 0.2s ease;
+}
+
+.die.active::after {
+  border-bottom-color: currentColor !important; /* This will match the die's current color (blue or red) */
 }
 
 /* Sum Die (Larger) */
@@ -229,6 +234,28 @@ body {
   border-left-width: 48px;
   border-right-width: 48px;
   border-bottom-width: 88px;
+}
+
+/* Rolling/Active State (Inverted) */
+.die.active {
+  color: #ffffff !important;
+}
+
+.die.active::before {
+  /* Invert blue turn: White Text, Blue BG */
+  border-bottom-color: var(--blue) !important;
+}
+
+.dice-panel.red-turn .die.active::before {
+  /* Invert red turn: White Text, Red BG */
+  border-bottom-color: var(--red) !important;
+}
+
+/* Rolling Outline */
+.die.rolling {
+  filter: drop-shadow(0 0 4px var(--green));
+  transform: scale(1.05);
+  z-index: 10;
 }
 
 /* --- RED TURN OVERRIDES --- */

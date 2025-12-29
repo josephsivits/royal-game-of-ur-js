@@ -1,9 +1,31 @@
 class GameUI {
   constructor() {
     this.game = new Game();
+    this.audioCtx = null; // Web Audio Context
     this.initializeElements();
     this.setupEventListeners();
     this.updateDisplay();
+  }
+
+  // Simple Synthesized Beep
+  playTone(freq = 440, type = 'sine', duration = 0.1) {
+    if (!this.audioCtx) {
+      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+    
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+    
+    gain.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + duration);
+    
+    osc.connect(gain);
+    gain.connect(this.audioCtx.destination);
+    
+    osc.start();
+    osc.stop(this.audioCtx.currentTime + duration);
   }
 
   initializeElements() {
@@ -67,23 +89,50 @@ class GameUI {
   handleRoll() {
     if (this.game.gameState !== 'rolling') return;
     
+    // Resume audio context if needed
+    if (this.audioCtx && this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+
     try {
       const roll = this.game.rollDice();
-      this.updateDiceDisplay();
-      this.updateDisplay();
       
-      // If turn was skipped (roll 0 or no moves), show a brief message could be nice,
-      // but strictly 'headless' logic handles the turn switch. 
-      // The UI just reflects the new state.
+      // Animate Dice sequentially
+      const diceValues = this.game.lastRoll;
       
-      const state = this.game.getState();
-      // If state went back to 'rolling' immediately, it means turn passed or 0 roll
-      if (state.gameState === 'rolling' && roll === 0) {
-         // Roll 0 animation or delay could be added here
-      } else if (state.gameState === 'rolling' && roll !== 0) {
-         // No moves available
-         // We could add a visual indicator here
-      }
+      // Reset Dice Display first
+      this.dice.forEach(d => {
+        d.textContent = '';
+        d.parentElement.classList.remove('active', 'rolling');
+      });
+      this.sumDie.textContent = '';
+      this.sumDie.parentElement.classList.remove('active');
+
+      // Sequential Animation
+      diceValues.forEach((val, idx) => {
+        setTimeout(() => {
+          const dieEl = this.dice[idx].parentElement;
+          dieEl.classList.add('active', 'rolling'); // Invert color + green glow
+          this.dice[idx].textContent = val;
+          this.playTone(600 + (idx * 50), 'triangle', 0.1); // Rising pitch
+          
+          // Remove glow after short delay but keep active (inverted)
+          setTimeout(() => dieEl.classList.remove('rolling'), 200);
+          
+        }, idx * 200);
+      });
+
+      // Show Sum after individual dice
+      setTimeout(() => {
+        this.sumDie.parentElement.classList.add('active', 'rolling');
+        this.sumDie.textContent = roll;
+        this.playTone(800, 'sine', 0.3); // High pitch for sum
+        
+        setTimeout(() => this.sumDie.parentElement.classList.remove('rolling'), 300);
+        
+        // Final UI Update (enables moves)
+        this.updateDisplay(true); // pass flag to keep dice active
+      }, diceValues.length * 200 + 100);
 
     } catch (error) {
       console.error('Roll error:', error);
@@ -143,7 +192,7 @@ class GameUI {
     }
   }
 
-  updateDiceDisplay() {
+  updateDiceDisplay(keepActive = false) {
     const state = this.game.getState();
     
     if (this.game.lastRoll) {
@@ -151,13 +200,23 @@ class GameUI {
         this.dice[idx].textContent = value;
       });
       this.sumDie.textContent = state.diceResult !== null ? state.diceResult : 0;
+      
+      // If we are NOT in the middle of a roll animation (i.e. just refreshing state)
+      // and we want to reset to default colors (e.g. after a move or new turn)
+      if (!keepActive) {
+         this.dice.forEach(d => d.parentElement.classList.remove('active', 'rolling'));
+         this.sumDie.parentElement.classList.remove('active', 'rolling');
+      }
     } else {
       this.dice.forEach(die => die.textContent = '0');
       this.sumDie.textContent = '0';
+      // Reset colors
+      this.dice.forEach(d => d.parentElement.classList.remove('active', 'rolling'));
+      this.sumDie.parentElement.classList.remove('active', 'rolling');
     }
   }
 
-  updateDisplay() {
+  updateDisplay(keepDiceActive = false) {
     const state = this.game.getState();
     
     // 1. Update Turn Indicator
@@ -244,7 +303,7 @@ class GameUI {
     this.blueOffBoard.classList.toggle('valid-move', canEnter(1));
     this.redOffBoard.classList.toggle('valid-move', canEnter(2));
     
-    this.updateDiceDisplay();
+    this.updateDiceDisplay(keepDiceActive);
   }
 }
 
