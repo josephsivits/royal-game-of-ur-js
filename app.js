@@ -14,6 +14,7 @@ class GameUI {
     this.rollButton = document.getElementById('roll-button');
     this.turnIndicator = document.getElementById('turn-indicator');
     this.turnText = document.getElementById('turn-text');
+    this.dicePanel = document.querySelector('.dice-panel'); // Added reference
     
     // Dice
     this.dice = [
@@ -169,6 +170,9 @@ class GameUI {
       this.turnIndicator.classList.add('red-turn');
       this.turnText.textContent = 'RED TURN';
     }
+
+    // Toggle red-turn class on dice panel
+    this.dicePanel.classList.toggle('red-turn', state.currentTurn === 2);
     
     // 2. Update Roll Button
     this.rollButton.disabled = state.gameState !== 'rolling';

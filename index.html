@@ -8,100 +8,89 @@
 </head>
 <body>
   <div class="stage">
-    <!-- Score (top-right) -->
-    <aside class="score-panel" aria-label="Score">
-      <div class="score-label">SCORE</div>
-      <div class="score-number score-blue" id="blue-score">0</div>
-      <div class="score-number score-red" id="red-score">0</div>
-    </aside>
+    
+    <!-- Score (Top Row) -->
+    <header class="score-panel" aria-label="Score">
+      <div class="score-group">
+        <div class="score-label">SCORE</div>
+        <div class="score-number score-blue" id="blue-score">0</div>
+        <div class="score-number score-red" id="red-score">0</div>
+      </div>
+    </header>
 
-    <!-- Board (center) -->
+    <!-- Board (Middle Row) -->
     <main class="board-wrap" aria-label="Board">
       <div class="board">
-        <!-- Top row: Blue private (4) + spacer/offboard + Blue end (2) -->
-        <div class="board-row board-row-top">
-          <div class="lane lane-private lane-blue">
-            <div class="square blue-square rosette-square" data-pos="4" data-player="1">
-              <span class="rosette" aria-hidden="true"><i></i></span>
-            </div>
-            <div class="square blue-square" data-pos="3" data-player="1"></div>
-            <div class="square blue-square" data-pos="2" data-player="1"></div>
-            <div class="square blue-square" data-pos="1" data-player="1"></div>
-          </div>
-
-          <div class="offboard offboard-blue" id="blue-off-board" role="button" tabindex="0" aria-label="Blue pieces off-board">
+        <!-- Top Row -->
+        <div class="square blue-square rosette-square" data-pos="4" data-player="1">
+            <span class="rosette" aria-hidden="true"><i></i></span>
+        </div>
+        <div class="square blue-square" data-pos="3" data-player="1"></div>
+        <div class="square blue-square" data-pos="2" data-player="1"></div>
+        <div class="square blue-square" data-pos="1" data-player="1"></div>
+        
+        <div class="offboard offboard-blue" id="blue-off-board" role="button" tabindex="0" aria-label="Blue pieces off-board">
             <div class="offboard-disc offboard-disc-blue" aria-hidden="true"></div>
             <div class="offboard-count offboard-count-blue" id="blue-count">x7</div>
-          </div>
-
-          <div class="lane lane-end lane-blue">
-            <div class="square blue-square rosette-square" data-pos="14" data-player="1">
-              <span class="rosette" aria-hidden="true"><i></i></span>
-            </div>
-            <div class="square blue-square" data-pos="13" data-player="1"></div>
-          </div>
         </div>
-
-        <!-- Middle row: Shared (8) -->
-        <div class="board-row board-row-mid">
-          <div class="lane lane-shared">
-            <div class="square shared-square" data-pos="5"></div>
-            <div class="square shared-square" data-pos="6"></div>
-            <div class="square shared-square" data-pos="7"></div>
-            <div class="square shared-square rosette-square" data-pos="8">
-              <span class="rosette" aria-hidden="true"><i></i></span>
-            </div>
-            <div class="square shared-square" data-pos="9"></div>
-            <div class="square shared-square" data-pos="10"></div>
-            <div class="square shared-square" data-pos="11"></div>
-            <div class="square shared-square" data-pos="12"></div>
-          </div>
+        
+        <div class="square blue-square rosette-square" data-pos="14" data-player="1">
+            <span class="rosette" aria-hidden="true"><i></i></span>
         </div>
+        <div class="square blue-square" data-pos="13" data-player="1"></div>
 
-        <!-- Bottom row: Red private (4) + spacer/offboard + Red end (2) -->
-        <div class="board-row board-row-bot">
-          <div class="lane lane-private lane-red">
-            <div class="square red-square rosette-square" data-pos="4" data-player="2">
-              <span class="rosette" aria-hidden="true"><i></i></span>
-            </div>
-            <div class="square red-square" data-pos="3" data-player="2"></div>
-            <div class="square red-square" data-pos="2" data-player="2"></div>
-            <div class="square red-square" data-pos="1" data-player="2"></div>
-          </div>
+        <!-- Middle Row -->
+        <div class="square shared-square" data-pos="5"></div>
+        <div class="square shared-square" data-pos="6"></div>
+        <div class="square shared-square" data-pos="7"></div>
+        <div class="square shared-square rosette-square" data-pos="8">
+             <span class="rosette" aria-hidden="true"><i></i></span>
+        </div>
+        <div class="square shared-square" data-pos="9"></div>
+        <div class="square shared-square" data-pos="10"></div>
+        <div class="square shared-square" data-pos="11"></div>
+        <div class="square shared-square" data-pos="12"></div>
 
-          <div class="offboard offboard-red" id="red-off-board" role="button" tabindex="0" aria-label="Red pieces off-board">
+        <!-- Bottom Row -->
+        <div class="square red-square rosette-square" data-pos="4" data-player="2">
+             <span class="rosette" aria-hidden="true"><i></i></span>
+        </div>
+        <div class="square red-square" data-pos="3" data-player="2"></div>
+        <div class="square red-square" data-pos="2" data-player="2"></div>
+        <div class="square red-square" data-pos="1" data-player="2"></div>
+
+        <div class="offboard offboard-red" id="red-off-board" role="button" tabindex="0" aria-label="Red pieces off-board">
             <div class="offboard-disc offboard-disc-red" aria-hidden="true"></div>
             <div class="offboard-count offboard-count-red" id="red-count">x7</div>
-          </div>
-
-          <div class="lane lane-end lane-red">
-            <div class="square red-square rosette-square" data-pos="14" data-player="2">
-              <span class="rosette" aria-hidden="true"><i></i></span>
-            </div>
-            <div class="square red-square" data-pos="13" data-player="2"></div>
-          </div>
         </div>
+        
+        <div class="square red-square rosette-square" data-pos="14" data-player="2">
+             <span class="rosette" aria-hidden="true"><i></i></span>
+        </div>
+        <div class="square red-square" data-pos="13" data-player="2"></div>
       </div>
     </main>
 
-    <!-- Controls (bottom-left) -->
-    <section class="controls" aria-label="Controls">
-      <div class="turn-pill" id="turn-indicator">
-        <span id="turn-text">BLUE TURN</span>
+    <!-- Bottom Bar (Controls + Dice) -->
+    <footer class="bottom-bar">
+      <div class="controls-wrap">
+        <div class="turn-pill" id="turn-indicator">
+            <span id="turn-text">BLUE TURN</span>
+        </div>
+        <button class="roll-pill" id="roll-button" type="button">ROLL</button>
       </div>
-      <button class="roll-pill" id="roll-button" type="button">ROLL</button>
-    </section>
 
-    <!-- Dice (bottom-center) -->
-    <section class="dice-panel" aria-label="Dice">
-      <div class="dice-tray" id="dice-container">
-        <div class="die" id="die-0"><span class="die-value">0</span></div>
-        <div class="die" id="die-1"><span class="die-value">0</span></div>
-        <div class="die" id="die-2"><span class="die-value">0</span></div>
-        <div class="die" id="die-3"><span class="die-value">0</span></div>
-        <div class="die die-sum" id="die-sum"><span class="die-value">0</span></div>
+      <div class="dice-panel" aria-label="Dice">
+        <div class="dice-tray" id="dice-container">
+            <div class="die" id="die-0"><span class="die-value">0</span></div>
+            <div class="die" id="die-1"><span class="die-value">0</span></div>
+            <div class="die" id="die-2"><span class="die-value">0</span></div>
+            <div class="die" id="die-3"><span class="die-value">0</span></div>
+            <div class="die die-sum" id="die-sum"><span class="die-value">0</span></div>
+        </div>
       </div>
-    </section>
+    </footer>
+
   </div>
 
   <script src="Game.js"></script>
